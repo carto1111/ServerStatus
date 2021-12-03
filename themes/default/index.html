@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ServerStatus</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <style type="text/css">
+        body {
+            padding: 0;
+            margin: 0px 20px;
+        }
+
+        p {
+            font-size: 30px;
+            line-height: 30px;
+        }
+
+        div.title {
+            width: 100%;
+            font-size: 20px;
+            line-height: 20px;
+            text-align: center;
+        }
+
+        div.info {
+            text-align: center;
+            float: left;
+            width: 24%;
+        }
+
+        div.info > p {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        div.info > pre {
+            text-align: left;
+        }
+
+        div.info > span {
+            display: block;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div class="title">
+    <h3><span id="host_hostname"></span>[<span id="stat_time"></span>]</h3>
+</div>
+<div>
+    <div class="info">
+        <span>Loads：<span id="host_loads"></span></span>
+        <span>Uptime：<span id="host_uptime"></span></span>
+        <span>Procs：<span id="host_procs"></span></span>
+    </div>
+    <div class="info">
+        <span>OS：<span id="host_os"></span></span>
+        <span>KernelArch：<span id="host_kernelArch"></span></span>
+        <span>PlatformVersion：<span id="host_platform"><span id="host_platformVer"></span></span></span>
+    </div>
+    <div class="info">
+        <span>TCP/UDP：<span id="net_tcpCount"></span>/<span id="net_udpCount"></span></span>
+        <span>NetIO Up↑：<span id="net_IO_up"></span></span>
+        <span>NetIO Down↓：<span id="net_IO_down"></span></span>
+    </div>
+    <div class="info">
+        <span>NetTraffic Sent↑：<span id="net_traffic_sent"></span></span>
+        <span>NetTraffic Recv↓：<span id="net_traffic_recv"></span></span>
+    </div>
+    <div style="clear: both"></div>
+</div>
+<div class="info">
+    <p>CPU</p>
+    <input id="cpu" type="text" value="0" class="dial" data-width="75%" data-height="75%" data-fgColor="#66CC66"
+           data-angleArc="250" data-angleOffset="-125" data-readOnly="true">
+    <span>Percent：<span id="cpu_usedPercent"></span></span>
+    <span>PhysicalCount：<span id="cpu_physicalCount"></span></span>
+    <span>LogicalCount：<span id="cpu_logicalCount"></span></span>
+    <span>VendorId：<span id="cpu_vendorId"></span></span>
+    <span>Model：<span id="cpu_model"></span></span>
+    <span>ModelName：<span id="cpu_modelName"></span></span>
+    <span>Mhz：<span id="cpu_mhz"></span></span>
+</div>
+<div class="info">
+    <p>MEM</p>
+    <input id="mem" type="text" value="0" class="dial" data-width="75%" data-height="75%" data-fgColor="#66CC66"
+           data-angleArc="250" data-angleOffset="-125" data-readOnly="true">
+    <span>Percent：<span id="mem_usedPercent"></span></span>
+    <span>Total：<span id="mem_total"></span></span>
+    <span>Used：<span id="mem_used"></span></span>
+    <span>Free：<span id="mem_free"></span></span>
+    <span>Buffers：<span id="mem_buffers"></span></span>
+    <span>Cached：<span id="mem_cached"></span></span>
+</div>
+<div class="info">
+    <p>SWAP</p>
+    <input id="swap" type="text" value="0" class="dial" data-width="75%" data-height="75%" data-fgColor="#66CC66"
+           data-angleArc="250" data-angleOffset="-125" data-readOnly="true">
+    <span>Percent：<span id="swap_usedPercent"></span></span>
+    <span>Total：<span id="swap_total"></span></span>
+    <span>Used：<span id="swap_used"></span></span>
+    <span>Free：<span id="swap_free"></span></span>
+</div>
+<div class="info">
+    <p>DISK</p>
+    <input id="disk" type="text" value="0" class="dial" data-width="75%" data-height="75%" data-fgColor="#66CC66"
+           data-angleArc="250" data-angleOffset="-125" data-readOnly="true">
+    <span>Percent：<span id="disk_usedPercent"></span></span>
+    <span>Fstype：<span id="disk_fstype"></span></span>
+    <span>Total：<span id="disk_total"></span></span>
+    <span>Used：<span id="disk_used"></span></span>
+    <span>Free：<span id="disk_free"></span></span>
+</div>
+<div style="clear:both"></div>
+</body>
+<script type="text/javascript" src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://lib.baomitu.com/jQuery-Knob/1.2.13/jquery.knob.min.js"></script>
+<script type="text/javascript">
+    function getTimeAge(timesec) {
+        var ago = "";
+        if (timesec / 86400 >= 1) {
+            ago = ago + parseInt(timesec / 86400) + 'days ';
+        }
+        timesec = timesec % 86400
+        if (timesec / 3600 >= 1) {
+            if (timesec / 3600 < 10) {
+                ago = ago + "0"
+            }
+            ago = ago + parseInt(timesec / 3600) + ':';
+        } else {
+            ago = ago + '00:';
+        }
+        timesec = timesec % 3600
+        if (timesec / 60 >= 1) {
+            if (timesec / 60 < 10) {
+                ago = ago + "0"
+            }
+            ago = ago + parseInt(timesec / 60) + ':';
+        } else {
+            ago = ago + '00:';
+        }
+        timesec = timesec % 60
+        if (timesec < 10) {
+            ago = ago + "0"
+        }
+        ago = ago + parseInt(timesec);
+        return ago;
+    }
+
+    function getFlow(flowVlueBytes) {
+        var flow = "";
+        if (flowVlueBytes / 1024 < 1024) {
+            //KB
+            var kb_Flow = flowVlueBytes / 1024;
+            flow = Math.round(kb_Flow * 100) / 100 + 'KB';
+        } else if (flowVlueBytes / 1024 >= 1024 && flowVlueBytes / 1024 / 1024 < 1024) {
+            //MB
+            var mb_Flow = flowVlueBytes / 1024 / 1024;
+            flow = Math.round(mb_Flow * 100) / 100 + 'MB';
+        } else if (flowVlueBytes / 1024 / 1024 >= 1024) {
+            //GB
+            var gb_Flow = flowVlueBytes / 1024 / 1024 / 1024;
+            flow = Math.round(gb_Flow * 100) / 100 + 'GB';
+        } else {
+            flow = flowVlueBytes + "B";
+        }
+        return flow;
+    }
+
+    function statsFuction() {
+        $.ajax({
+            url: "stats.json",
+            type: "get",
+            dataType: "json",
+            async: false,
+            cache: false,
+            success: function (res) {
+                // console.log(res);
+
+                $("#stat_time").html(res.time)
+                $("#host_hostname").html(res.host.hostname);
+                //host
+                loads = Math.round(res.host.loads[0] * 100) / 100 + "," + Math.round(res.host.loads[1] * 100) / 100 + "," + Math.round(res.host.loads[2] * 100) / 100
+                $("#host_loads").html(loads);
+                $("#host_uptime").html(getTimeAge(res.host.uptime));
+                $("#host_procs").html(res.host.procs);
+                $("#host_os").html(res.host.os);
+                $("#host_kernelArch").html(res.host.kernelArch);
+                $("#host_platform").html(res.host.platform);
+                $("#host_platformVer").html(res.host.platformVer);
+
+                //net
+                $("#net_tcpCount").html(res.net.tcpCount);
+                $("#net_udpCount").html(res.net.udpCount);
+                $("#net_IO_up").html(getFlow(res.net.IO.up));
+                $("#net_IO_down").html(getFlow(res.net.IO.down));
+                $("#net_traffic_sent").html(getFlow(res.net.traffic.sent));
+                $("#net_traffic_recv").html(getFlow(res.net.traffic.recv));
+
+                //cpu
+                $("#cpu").val(res.cpu.usedPercent);
+                $("#cpu_usedPercent").html(Math.round(res.cpu.usedPercent * 100) / 100 + "%");
+                $("#cpu_physicalCount").html(res.cpu.physicalCount);
+                $("#cpu_logicalCount").html(res.cpu.logicalCount);
+                $("#cpu_vendorId").html(res.cpu.vendorId);
+                $("#cpu_model").html(res.cpu.model);
+                $("#cpu_modelName").html(res.cpu.modelName);
+                $("#cpu_mhz").html(res.cpu.mhz);
+
+                //mem
+                $("#mem").val(res.mem.usedPercent)
+                $("#mem_usedPercent").html(Math.round(res.mem.usedPercent * 100) / 100 + "%");
+                $("#mem_total").html(getFlow(res.mem.total));
+                $("#mem_free").html(getFlow(res.mem.free));
+                $("#mem_used").html(getFlow(res.mem.used));
+                $("#mem_buffers").html(getFlow(res.mem.buffers));
+                $("#mem_cached").html(getFlow(res.mem.cached));
+
+                //swap
+                $("#swap").val(res.swap.usedPercent);
+                $("#swap_usedPercent").html(Math.round(res.swap.usedPercent * 100) / 100 + "%");
+                $("#swap_total").html(getFlow(res.swap.total));
+                $("#swap_free").html(getFlow(res.swap.free));
+                $("#swap_used").html(getFlow(res.swap.used));
+
+                //disk
+                $("#disk").val(res.disk.usedPercent);
+                $("#disk_usedPercent").html(Math.round(res.disk.usedPercent * 100) / 100 + "%");
+                $("#disk_fstype").html(res.disk.fstype);
+                $("#disk_total").html(getFlow(res.disk.total));
+                $("#disk_free").html(getFlow(res.disk.free));
+                $("#disk_used").html(getFlow(res.disk.used));
+
+                $(".dial").trigger('change');
+            }
+        });
+    }
+
+    $(function () {
+        $(".dial").knob({
+            'change': function (v) {
+                console.log(v);
+            }
+        });
+        statsFuction()
+        setInterval(statsFuction, 1000);
+    });
+
+</script>
+</html>
