@@ -36,7 +36,7 @@ install() {
   mv ServerStatus_linux_${os_arch} /opt/ServerStatus/ServerStatus
   chmod +x /opt/ServerStatus/ServerStatus
 
-  echo -e "> 修改配置"
+  echo -e "> 安装启动项"
 
   service_script=/etc/systemd/system/ServerStatus.service
 
@@ -61,12 +61,12 @@ WantedBy=multi-user.target
 EOFSCRIPT
   chmod +x $service_script
 
-  echo -e "${green}修改成功，请稍等重启生效${plain}"
+  echo -e "${green}安装成功，正在启动...${plain}"
   systemctl daemon-reload
   systemctl enable ServerStatus.service
   systemctl restart ServerStatus.service
 
-  echo -e "显示日志 ${plain}"
+  echo -e "启动成功，显示日志 ${plain}"
   journalctl -n10 -u ServerStatus.service
 }
 
