@@ -81,6 +81,7 @@ uninstall() {
 
 restart() {
   echo -e "> 重启"
+  systemctl daemon-reload
   systemctl restart ServerStatus.service
 }
 
