@@ -1,14 +1,15 @@
 # ServerStatus
 
-复制themes的下任意主题到程序的目录下，改名theme 即可启用主题，可以进行自行编辑html,js,css,images
+一键安装   
+`curl -s https://raw.githubusercontent.com/bianzhifu/ServerStatus/main/install.sh | bash -s i`     
+一键卸载   
+`curl -s https://raw.githubusercontent.com/bianzhifu/ServerStatus/main/install.sh | bash -s u`     
+一键重启   
+`curl -s https://raw.githubusercontent.com/bianzhifu/ServerStatus/main/install.sh | bash -s r`     
 
-一键下载运行    
-`wget https://github.com/bianzhifu/ServerStatus/releases/download/v1.0.0/ServerStatus_linux_amd64 && chmod a+x ServerStatus_linux_amd64 && ./ServerStatus_linux_amd64 -port=8888 -theme=badafans &`
+修改默认端口8888和默认badafans主题在 /etc/systemd/system/ServerStatus.service 文件内修改完成执行一键重启    
 
-Liunx启动项    
-修改里面的ServerStatus.service路径端口等信息    
-然后放到/etc/systemd/system/目录下运行下面三个命令    
-systemctl daemon-reload     
-systemctl enable ServerStatus.service    
-systemctl restart ServerStatus.service    
+自定义主题 复制themes的下任意主题到程序的目录下，改名theme 即可启用主题，可以进行自行编辑html,js,css,images 
+
+
   
