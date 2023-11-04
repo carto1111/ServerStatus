@@ -15,7 +15,7 @@ pre_check() {
     os_arch="amd64"
   elif [[ $(uname -m | grep 'aarch64\|armv8b\|armv8l') != "" ]]; then
     os_arch="arm64"
-  elif [[ $(uname -m | grep 'armv7l') != ""]]; then
+  elif [[ $(uname -m | grep 'armv7l') != "" ]]; then
   os_arch="arm"  
   else
     echo "只支持amd64/arm64"
