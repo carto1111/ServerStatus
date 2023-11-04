@@ -11,16 +11,17 @@ pre_check() {
   [[ $EUID -ne 0 ]] && echo -e "${red}错误: ${plain} 必须使用root用户运行此脚本！\n" && exit 1
 
   ## os_arch
-  if [[ $(uname -m | grep 'x86_64') != "" ]]; then
-    os_arch="amd64"
-  elif [[ $(uname -m | grep 'aarch64\|armv8b\|armv8l') != "" ]]; then
-    os_arch="arm64"
-  elif [[ $(uname -m | grep 'armv7l') != "" ]]; then
-  os_arch="arm"  
-  else
-    echo "只支持amd64/arm64"
-    exit 1
-  fi
+if [[ $(uname -m | grep 'x86_64') != "" ]]; then
+  os_arch="amd64"
+elif [[ $(uname -m | grep 'aarch64\|armv8b\|armv8l') != "" ]]; then
+  os_arch="arm64"
+elif [[ $(uname -m | grep 'armv7l') != "" ]]; then
+  os_arch="arm"
+else
+  echo "只支持amd64/arm64"
+  exit 1
+fi
+
 }
 
 install() {
