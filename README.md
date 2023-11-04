@@ -1,11 +1,11 @@
 # ServerStatus
 
 一键安装   
-`bash <(curl -s https://raw.githubusercontent.com/bianzhifu/ServerStatus/main/install.sh) i`     
+`bash <(curl -s https://raw.githubusercontent.com/SAKURA-YUMI/ServerStatus/main/install.sh) i`     
 一键卸载   
-`bash <(curl -s https://raw.githubusercontent.com/bianzhifu/ServerStatus/main/install.sh) u`     
+`bash <(curl -s https://raw.githubusercontent.com/SAKURA-YUMI/ServerStatus/main/install.sh) u`     
 一键重启   
-`bash <(curl -s https://raw.githubusercontent.com/bianzhifu/ServerStatus/main/install.sh) r`     
+`bash <(curl -s https://raw.githubusercontent.com/SAKURA-YUMI/ServerStatus/main/install.sh) r`     
 
 修改默认端口8888和默认badafans主题在 /etc/systemd/system/ServerStatus.service 文件内修改完成执行一键重启    
 
