@@ -15,6 +15,8 @@ pre_check() {
     os_arch="amd64"
   elif [[ $(uname -m | grep 'aarch64\|armv8b\|armv8l') != "" ]]; then
     os_arch="arm64"
+  elif [[ $(uname -m | grep 'armv7l') != ""]]; then
+  os_arch="arm"  
   else
     echo "只支持amd64/arm64"
     exit 1
@@ -28,9 +30,9 @@ install() {
   chmod 777 /opt/ServerStatus/
 
   echo -e "下载ServerStatus"
-  wget -O ServerStatus_linux_${os_arch} https://github.com/bianzhifu/ServerStatus/releases/download/v1.0.0/ServerStatus_linux_${os_arch} >/dev/null 2>&1
+  wget -O ServerStatus_linux_${os_arch} https://github.com/SAKURA-YUMI/ServerStatus/releases/download/v1.0.0/ServerStatus_linux_${os_arch} >/dev/null 2>&1
   if [[ $? != 0 ]]; then
-    echo -e "${red}下载失败,https://github.com/bianzhifu/ServerStatus/releases/download/v1.0.0/ServerStatus_linux_${os_arch}"
+    echo -e "${red}下载失败,https://github.com/SAKURA-YUMI/ServerStatus/releases/download/v1.0.0/ServerStatus_linux_${os_arch}"
     return 0
   fi
   mv ServerStatus_linux_${os_arch} /opt/ServerStatus/ServerStatus
